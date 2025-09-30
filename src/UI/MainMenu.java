@@ -1,14 +1,18 @@
 package UI;
 
+import Service.CardService;
 import Service.ClientService;
+
 import java.util.Scanner;
 
 public class MainMenu {
     private final ClientService clientService;
     private final Scanner scanner = new Scanner(System.in);
+    private CardService cardService;
 
-    public MainMenu(ClientService clientService) {
+    public MainMenu(ClientService clientService, CardService cardService) {
         this.clientService = clientService;
+        this.cardService = cardService;
     }
 
     public void display() {
@@ -58,8 +62,35 @@ public class MainMenu {
     }
 
     private void issueCard() {
-        System.out.println("\n--- Issue Card ---");
-        // TODO: Implement card issuing logic (debit/credit/prepaid)
+        System.out.print("Enter client ID: ");
+        Long clientId = Long.parseLong(scanner.nextLine().trim());
+
+        System.out.print("Enter card type (1=Debit, 2=Credit, 3=Prepaid): ");
+        String type = scanner.nextLine().trim();
+        switch (type) {
+            case "1" -> {
+                System.out.println("Enter daily limit");
+                Double dailyLimit = scanner.nextDouble();
+                cardService.issueDebitCard(clientId,type,dailyLimit);
+                break;
+            }
+            case "2" -> {
+                System.out.println("Enter monthlyLimit");
+                Double monthlyLimit = scanner.nextDouble();
+                System.out.println("Enter interestRate");
+                Double interestRate = scanner.nextDouble();
+                cardService.issueCreditCard();
+                break;
+            }
+            case "3" -> {
+                System.out.println("Enter availableBalance");
+                Double availableBalance = scanner.nextDouble();
+                cardService.issuePrepaidCard();
+            }
+            default -> System.out.println("baaaaaad Choice");
+
+
+        }
     }
 
     private void performOperation() {

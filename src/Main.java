@@ -1,5 +1,6 @@
 import DAO.ClientDAO;
 import Db.DatabaseConnection;
+import Service.CardService;
 import Service.ClientService;
 import UI.MainMenu;
 
@@ -11,8 +12,9 @@ public class Main  {
         try( Connection connection= DatabaseConnection.getConnection()) {
 
             ClientDAO clientDAO = new ClientDAO(connection);
+            CardService cardService = new CardService();
             ClientService clientService = new ClientService(clientDAO);
-            MainMenu mainMenu=new MainMenu(clientService);
+            MainMenu mainMenu=new MainMenu(clientService,cardService);
             mainMenu.display();
         }catch (SQLException e) {
             System.out.println(" Failed to connect: " + e.getMessage());
