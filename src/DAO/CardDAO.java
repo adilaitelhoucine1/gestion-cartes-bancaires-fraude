@@ -17,14 +17,14 @@ public class CardDAO {
 
     public  void saveDebitCard(DebitCard  debitCard){
         try(PreparedStatement preparedStatement=connection.prepareStatement(
-                "INSERT INTO Card (number,expiration_date,status,card_type,client_id,daily_limit)" +
-                        " values (?,?,?,'DEBIT',?,?)"
+                "INSERT INTO Card (number,expiration_date,card_type,client_id,daily_limit)" +
+                        " values (?,?,'DEBIT',?,?)"
         )){
             preparedStatement.setString(1,debitCard.getNumber());
             preparedStatement.setDate(2, Date.valueOf(debitCard.getExpirationDate()));
-            preparedStatement.setString(3,debitCard.getStatus().name());
-            preparedStatement.setInt(4,debitCard.getClientId());
-            preparedStatement.setDouble(5,debitCard.getDailyLimit());
+            //preparedStatement.setString(3,debitCard.getStatus().name());
+            preparedStatement.setInt(3,debitCard.getClientId());
+            preparedStatement.setDouble(4,debitCard.getDailyLimit());
             preparedStatement.executeUpdate();
             System.out.println("Card added Sucessfuly");
         }catch(Exception e ){
