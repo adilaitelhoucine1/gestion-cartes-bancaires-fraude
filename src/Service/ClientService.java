@@ -4,6 +4,10 @@ import DAO.ClientDAO;
 import Entity.Client;
 import Util.InputValidator;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientService {
         private  ClientDAO clientDAO;
 
@@ -19,5 +23,10 @@ public class ClientService {
         }else{
             System.out.println("No validate inputs");
         }
+    }
+
+    public  ResultSet listAllCLients(){
+        return clientDAO.listAllClientsWithCards();
+
     }
 }

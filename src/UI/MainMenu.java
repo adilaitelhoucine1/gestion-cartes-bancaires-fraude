@@ -1,8 +1,14 @@
 package UI;
 
+import DAO.ClientDAO;
+import Entity.Client;
 import Service.CardService;
 import Service.ClientService;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -24,6 +30,7 @@ public class MainMenu {
             System.out.println("4. View Card History");
             System.out.println("5. Launch Fraud Analysis");
             System.out.println("6. Block/Suspend Card");
+            System.out.println("7. List Clients (with cards)");
             System.out.println("0. Exit");
             System.out.print("Choose an option: ");
             String input = scanner.nextLine();
@@ -35,6 +42,7 @@ public class MainMenu {
                 case "4" -> viewCardHistory();
                 case "5" -> launchFraudAnalysis();
                 case "6" -> blockSuspendCard();
+                case "7" -> listClients();
                 case "0" -> {
                     System.out.println("Goodbye!");
                     return;
@@ -55,9 +63,9 @@ public class MainMenu {
 
         try {
            clientService.addClient(name, email, phone);
-           System.out.println("✅ Client added successfully!");
+           System.out.println(" Client added successfully!");
         } catch (Exception e) {
-            System.out.println("❌ Error: " + e.getMessage());
+            System.out.println(" Error: " + e.getMessage());
         }
     }
 
@@ -111,5 +119,34 @@ public class MainMenu {
     private void blockSuspendCard() {
         System.out.println("\n--- Block/Suspend Card ---");
         // TODO: Implement block/suspend card
+    }
+
+    private  void listClients(){
+        ResultSet rs = clientService.listAllCLients();
+
+        try {
+            while (rs.next()) {
+                int id = rs.getInt("client_id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String cards = rs.getString("cards");
+
+                System.out.println("========================================");
+                System.out.println("👤 Client Profile");
+                System.out.println("----------------------------------------");
+                System.out.printf(" ID     : %d%n", id);
+                System.out.printf(" Name   : %s%n", name);
+                System.out.printf(" Email  : %s%n", email);
+                System.out.println("----------------------------------------");
+                System.out.println(" Cards  : " + (cards != null ? cards : " No cards"));
+                System.out.println("========================================\n");
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
     }
 }

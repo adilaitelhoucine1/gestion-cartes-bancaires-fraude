@@ -4,7 +4,9 @@ import Entity.Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
 
 public class ClientDAO {
     private final Connection conn;
@@ -26,4 +28,23 @@ public class ClientDAO {
             System.out.println(e.getMessage());
         }
     }
+
+
+    public ResultSet listAllClientsWithCards() {
+        String sql = "SELECT c.id AS client_id, c.name, c.email, " +
+                "GROUP_CONCAT(CONCAT(cr.number, ' (', cr.card_type, ')') SEPARATOR ', ') AS cards " +
+                "FROM client c " +
+                " JOIN card cr ON c.id = cr.client_id " +
+                "GROUP BY c.id, c.name, c.email " ;
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            return ps.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }
