@@ -6,8 +6,8 @@ public final class CreditCard extends Card {
     private final double monthlyLimit;
     private final double interestRate;
 
-    public CreditCard(Long id, String number, LocalDate expirationDate, CardStatus status, Long clientId, double monthlyLimit, double interestRate) {
-        super(id, number, expirationDate, status, clientId);
+    public CreditCard(int id, LocalDate expirationDate, CardStatus status, int clientId, double monthlyLimit, double interestRate) {
+        super(id, expirationDate, status, clientId);
         this.monthlyLimit = monthlyLimit;
         this.interestRate = interestRate;
     }

@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public final class PrepaidCard extends Card {
     private final double availableBalance;
 
-    public PrepaidCard(Long id, String number, LocalDate expirationDate, CardStatus status, Long clientId, double availableBalance) {
-        super(id, number, expirationDate, status, clientId);
+    public PrepaidCard(int id, String number, LocalDate expirationDate, CardStatus status, int clientId, double availableBalance) {
+        super(id, expirationDate, status, clientId);
         this.availableBalance = availableBalance;
     }
 

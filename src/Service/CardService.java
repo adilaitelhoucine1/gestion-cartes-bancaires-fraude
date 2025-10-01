@@ -2,6 +2,7 @@ package Service;
 
 import DAO.CardDAO;
 import Entity.Card;
+import Entity.CreditCard;
 import Entity.DebitCard;
 import Util.CardExpDate;
 import Util.CardNumberGenerator;
@@ -14,11 +15,15 @@ public class CardService {
        this.cardDAO=cardDAO;
    }
 
-    public  void issueDebitCard(Long clientId , String type , Double dailyLimit){
-        DebitCard debitCard = new DebitCard(0, CardNumberGenerator.generateCardNumber(), CardExpDate.generateExpirationDate(),
-                "ACTIVE",clientId,dailyLimit);
-      //  cardDAO.save(debitCard);
+    public  void issueDebitCard(int clientId , String type , Double dailyLimit){
+        DebitCard debitCard = new DebitCard(0, CardExpDate.generateExpirationDate(),
+                Card.CardStatus.ACTIVE,clientId,dailyLimit);
+          cardDAO.saveDebitCard(debitCard);
     }
-    public void issueCreditCard(){}
+    public void issueCreditCard(int clientId , String type, Double monthlyLimit, double interestRate){
+        CreditCard creditCard=new CreditCard(0,CardExpDate.generateExpirationDate(),
+                Card.CardStatus.ACTIVE,clientId,monthlyLimit,interestRate);
+        cardDAO.saveCreditCard(creditCard);
+    }
     public void issuePrepaidCard(){}
 }

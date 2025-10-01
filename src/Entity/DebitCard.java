@@ -5,8 +5,8 @@ import java.time.LocalDate;
 public final class DebitCard extends Card {
     private final double dailyLimit;
 
-    public DebitCard(Long id, String number, LocalDate expirationDate, CardStatus status, Long clientId, double dailyLimit) {
-        super(id, number, expirationDate, status, clientId);
+    public DebitCard(int id, LocalDate expirationDate, CardStatus status, int clientId, double dailyLimit) {
+        super(id, expirationDate, status, clientId);
         this.dailyLimit = dailyLimit;
     }
 

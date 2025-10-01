@@ -1,3 +1,4 @@
+import DAO.CardDAO;
 import DAO.ClientDAO;
 import Db.DatabaseConnection;
 import Service.CardService;
@@ -12,7 +13,8 @@ public class Main  {
         try( Connection connection= DatabaseConnection.getConnection()) {
 
             ClientDAO clientDAO = new ClientDAO(connection);
-            CardService cardService = new CardService();
+            CardDAO cardDAO= new CardDAO(connection);
+            CardService cardService = new CardService(cardDAO);
             ClientService clientService = new ClientService(clientDAO);
             MainMenu mainMenu=new MainMenu(clientService,cardService);
             mainMenu.display();

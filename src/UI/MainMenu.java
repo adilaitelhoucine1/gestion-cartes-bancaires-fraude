@@ -63,7 +63,7 @@ public class MainMenu {
 
     private void issueCard() {
         System.out.print("Enter client ID: ");
-        Long clientId = Long.parseLong(scanner.nextLine().trim());
+        int clientId = Integer.parseInt(scanner.nextLine().trim());
 
         System.out.print("Enter card type (1=Debit, 2=Credit, 3=Prepaid): ");
         String type = scanner.nextLine().trim();
@@ -79,7 +79,7 @@ public class MainMenu {
                 Double monthlyLimit = scanner.nextDouble();
                 System.out.println("Enter interestRate");
                 Double interestRate = scanner.nextDouble();
-                cardService.issueCreditCard();
+                cardService.issueCreditCard(clientId,type,monthlyLimit,interestRate);
                 break;
             }
             case "3" -> {
