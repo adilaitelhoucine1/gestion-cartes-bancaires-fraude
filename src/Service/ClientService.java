@@ -27,6 +27,7 @@ public class ClientService {
 
     public  ResultSet listAllCLients(){
         return clientDAO.listAllClientsWithCards();
-
     }
+
+
 }

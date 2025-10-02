@@ -1,24 +1,31 @@
 package UI;
 
 import DAO.ClientDAO;
+import DAO.OperationDAO;
+import Entity.Card;
+import Entity.CardOperation;
 import Entity.Client;
 import Service.CardService;
 import Service.ClientService;
+import Service.OperationService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class MainMenu {
     private final ClientService clientService;
     private final Scanner scanner = new Scanner(System.in);
     private CardService cardService;
-
-    public MainMenu(ClientService clientService, CardService cardService) {
+    private OperationService operationService;
+    public MainMenu(ClientService clientService, CardService cardService,OperationService operationService) {
         this.clientService = clientService;
         this.cardService = cardService;
+        this.operationService=operationService;
     }
 
     public void display() {
@@ -102,45 +109,45 @@ public class MainMenu {
     }
 
     private void performOperation() {
-        System.out.println("\n--- Perform Card Operation ---");
+        System.out.println("\n--- Perform a Card Operation ---");
         System.out.print("Enter card number: ");
         String cardNumber = scanner.nextLine().trim();
 
-        System.out.println("Choose operation type: ");
-        System.out.println("1. Purchase  ");
-        System.out.println("2. Withdrawal  ");
-        System.out.println("3. Online Payment ");
-        String operationTypeInput = scanner.nextLine().trim();
+        Optional<Card> carteOpt = cardService.findByNumber(cardNumber);
+        if (carteOpt.isEmpty()) {
+            System.out.println("Card not found.");
+            return;
+        }
+        Card carte = carteOpt.get();
 
-        String operationType;
-        switch (operationTypeInput) {
-            case "1" -> {
-                operationType = "CREDIT";
-                System.out.print("Enter monthlyLimit : ");
-                Double monthlyLimit = scanner.nextDouble();
-                System.out.print("Enter interestRate : ");
-                Double interestRate = scanner.nextDouble();
+        System.out.println("Select operation type: 1. Purchase  2. Withdrawal  3. Online Payment");
+        String typeInput = scanner.nextLine().trim();
 
-            }
-            case "2" -> {
-                operationType = "DEBIT";
-                System.out.print("Enter dailyLimit : ");
-                Double dailyLimit=scanner.nextDouble();
-
-            }
-            case "3" -> {
-                operationType = "PREPAID";
-                System.out.print("Enter availableBalance: ");
-                Double availableBalance=scanner.nextDouble();
-            }
+        CardOperation.OperationType type;
+        switch (typeInput) {
+            case "1" -> type = CardOperation.OperationType.PURCHASE;
+            case "2" -> type = CardOperation.OperationType.WITHDRAWAL;
+            case "3" -> type = CardOperation.OperationType.ONLINE_PAYMENT;
             default -> {
                 System.out.println("Invalid operation type.");
                 return;
             }
         }
 
+        System.out.print("Enter amount: ");
+        double amount;
+        try {
+            amount = Double.parseDouble(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid amount.");
+            return;
+        }
 
+        System.out.print("Enter location (leave empty if not applicable): ");
+        String location = scanner.nextLine().trim();
 
+        CardOperation cardOperation=new CardOperation(0L, LocalDateTime.now(), amount,type,location,carte.getId());
+        operationService.addOperation(cardOperation);
 
     }
 
@@ -187,4 +194,6 @@ public class MainMenu {
 
 
     }
+
+
 }
