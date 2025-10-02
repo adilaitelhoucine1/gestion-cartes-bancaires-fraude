@@ -2,6 +2,7 @@ package DAO;
 
 import Entity.CreditCard;
 import Entity.DebitCard;
+import Entity.PrepaidCard;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -43,6 +44,24 @@ public class CardDAO {
             preparedStatement.setInt(3,creditCard.getClientId());
             preparedStatement.setDouble(4,creditCard.getMonthlyLimit());
             preparedStatement.setDouble(5,creditCard.getInterestRate());
+            preparedStatement.executeUpdate();
+            System.out.println("Card added Sucessfuly");
+        }catch(Exception e ){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void  savePrepaidCard(PrepaidCard prepaidCard){
+        try(PreparedStatement preparedStatement=connection.prepareStatement(
+                "INSERT INTO Card (number,expiration_date,card_type,client_id,available_balance)" +
+                        "values (?,?,'PREPAID',?,?)"
+
+        )){
+            preparedStatement.setString(1,prepaidCard.getNumber());
+            preparedStatement.setDate(2, Date.valueOf(prepaidCard.getExpirationDate()));
+            // preparedStatement.setString(3,creditCard.getStatus().name());
+            preparedStatement.setInt(3,prepaidCard.getClientId());
+            preparedStatement.setDouble(4,prepaidCard.getAvailableBalance());
             preparedStatement.executeUpdate();
             System.out.println("Card added Sucessfuly");
         }catch(Exception e ){

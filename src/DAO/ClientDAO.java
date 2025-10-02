@@ -23,7 +23,7 @@ public class ClientDAO {
             ps.setString(2,client.email());
             ps.setString(3,client.phone());
             ps.executeUpdate();
-            System.out.println("Tesssssssssssssssssssssssssssssssssst");
+            //System.out.println("Tesssssssssssssssssssssssssssssssssst");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

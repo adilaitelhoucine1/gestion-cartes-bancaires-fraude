@@ -93,7 +93,7 @@ public class MainMenu {
             case "3" -> {
                 System.out.println("Enter availableBalance");
                 Double availableBalance = scanner.nextDouble();
-                cardService.issuePrepaidCard();
+                cardService.issuePrepaidCard(clientId,type,availableBalance);
             }
             default -> System.out.println("baaaaaad Choice");
 
@@ -102,8 +102,46 @@ public class MainMenu {
     }
 
     private void performOperation() {
-        System.out.println("\n--- Perform Operation ---");
-        // TODO: Implement operation logic (purchase, withdrawal, online payment)
+        System.out.println("\n--- Perform Card Operation ---");
+        System.out.print("Enter card number: ");
+        String cardNumber = scanner.nextLine().trim();
+
+        System.out.println("Choose operation type: ");
+        System.out.println("1. Purchase  ");
+        System.out.println("2. Withdrawal  ");
+        System.out.println("3. Online Payment ");
+        String operationTypeInput = scanner.nextLine().trim();
+
+        String operationType;
+        switch (operationTypeInput) {
+            case "1" -> {
+                operationType = "CREDIT";
+                System.out.print("Enter monthlyLimit : ");
+                Double monthlyLimit = scanner.nextDouble();
+                System.out.print("Enter interestRate : ");
+                Double interestRate = scanner.nextDouble();
+
+            }
+            case "2" -> {
+                operationType = "DEBIT";
+                System.out.print("Enter dailyLimit : ");
+                Double dailyLimit=scanner.nextDouble();
+
+            }
+            case "3" -> {
+                operationType = "PREPAID";
+                System.out.print("Enter availableBalance: ");
+                Double availableBalance=scanner.nextDouble();
+            }
+            default -> {
+                System.out.println("Invalid operation type.");
+                return;
+            }
+        }
+
+
+
+
     }
 
     private void viewCardHistory() {

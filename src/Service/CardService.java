@@ -4,6 +4,7 @@ import DAO.CardDAO;
 import Entity.Card;
 import Entity.CreditCard;
 import Entity.DebitCard;
+import Entity.PrepaidCard;
 import Util.CardExpDate;
 import Util.CardNumberGenerator;
 
@@ -25,5 +26,9 @@ public class CardService {
                 Card.CardStatus.ACTIVE,clientId,monthlyLimit,interestRate);
         cardDAO.saveCreditCard(creditCard);
     }
-    public void issuePrepaidCard(){}
+    public void issuePrepaidCard(int clientId , String type,Double availableBalance){
+        PrepaidCard  prepaidCard=new PrepaidCard(0,CardExpDate.generateExpirationDate(),
+                Card.CardStatus.ACTIVE,clientId,availableBalance);
+        cardDAO.savePrepaidCard(prepaidCard);
+    }
 }
