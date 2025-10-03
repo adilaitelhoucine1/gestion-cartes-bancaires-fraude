@@ -3,6 +3,9 @@ package Service;
 import DAO.OperationDAO;
 import Entity.Card;
 import Entity.CardOperation;
+import Util.CardExpDate;
+
+import java.time.LocalDate;
 
 public class OperationService {
 
@@ -13,12 +16,22 @@ public class OperationService {
         this.cardService=cardService;
     }
 
-    public  void addOperation(CardOperation cardOperation){
-       if(cardService.findByOperation(cardOperation).isPresent()){
-           Card card=cardService.findByOperation(cardOperation).get();
+    public  boolean addOperation(CardOperation cardOperation){
+       if(cardService.findById(cardOperation).isPresent()){
+           Card card=cardService.findById(cardOperation).get();
            if(card.getStatus().equals(Card.CardStatus.ACTIVE)){
-
+               if(CardExpDate.isExpired(cardOperation.date())){
+                  //  if()
+               }else{
+                   System.out.println("Card Expired");
+                   return false;
+               }
+           }else{
+               System.out.println("Ur card is blocked or suspended");
+               return  false;
            }
        }
+        return false;
     }
+
 }

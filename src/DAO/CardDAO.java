@@ -5,10 +5,7 @@ import Entity.CreditCard;
 import Entity.DebitCard;
 import Entity.PrepaidCard;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,13 +71,13 @@ public class CardDAO {
         }
     }
 
-    public List<Card>  getAllCards(){
-        List<Card> cards=new ArrayList<>();
-        try(PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM  card")){
-            ResultSet resultSet=preparedStatement.executeQuery();
+    public List<Card> getAllCards() {
+        List<Card> cards = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM  card")) {
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int cardID = resultSet.getInt("id");
-                String cardNumber=resultSet.getString("number");
+                String cardNumber = resultSet.getString("number");
                 LocalDate cardDate = resultSet.getDate("expiration_date").toLocalDate();
                 int clientId = resultSet.getInt("client_id");
                 String cardStatus = resultSet.getString("status");
@@ -88,12 +85,29 @@ public class CardDAO {
                 Card card = new Card(cardID, cardDate, Card.CardStatus.ACTIVE, clientId);
                 cards.add(card);
             }
-            return  cards;
+            return cards;
 
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return  cards;
+        return cards;
+    }
+
+    public String getCardType(Card card) {
+        String cardType = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement("select card_type from card where id=?")) {
+
+            preparedStatement.setInt(1, card.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                cardType = resultSet.getString("card_type");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return cardType;
     }
 }

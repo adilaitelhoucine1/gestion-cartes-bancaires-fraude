@@ -9,12 +9,9 @@ public record CardOperation(
         double amount,
         OperationType type,
         String location,
-        Long cardId
+        int cardId
 ) {
     public enum OperationType { PURCHASE, WITHDRAWAL, ONLINE_PAYMENT }
 
-    public  void getCardByOperation(Card card){
-        List<Card>
 
-    }
 }

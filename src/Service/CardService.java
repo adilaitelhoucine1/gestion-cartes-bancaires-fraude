@@ -45,7 +45,8 @@ public class CardService {
         return Optional.empty();
 
     }
-    public Optional<Card> findByOperation(CardOperation cardOperation) {
+
+    public Optional<Card> findById(CardOperation cardOperation) {
         List<Card> cards = cardDAO.getAllCards();
         for (Card card : cards) {
             if (card.getId()==cardOperation.cardId()){
@@ -55,6 +56,8 @@ public class CardService {
         return Optional.empty();
 
     }
+
+
 
 
 
