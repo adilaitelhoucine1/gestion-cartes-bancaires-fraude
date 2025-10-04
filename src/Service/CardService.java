@@ -3,9 +3,7 @@ package Service;
 import DAO.CardDAO;
 import Entity.*;
 import Util.CardExpDate;
-import Util.CardNumberGenerator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +66,9 @@ public class CardService {
         }
         return  null;
     }
-
+    public  void updateStatus(int cardId , String status){
+        cardDAO.updateStatus(cardId,status);
+    }
 
 }
 

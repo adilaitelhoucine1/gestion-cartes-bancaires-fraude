@@ -180,8 +180,25 @@ public class MainMenu {
 
     private void blockSuspendCard() {
         System.out.println("\n--- Block/Suspend Card ---");
-        // TODO: Implement block/suspend card
+        System.out.print("Enter card id: ");
+        int cardID = scanner.nextInt();
+        scanner.nextLine();
+
+        String action = "";
+        while (!(action.equalsIgnoreCase("BLOCKED")) && !(action.equalsIgnoreCase("SUSPENDED"))) {
+            System.out.print("Please choose BLOCKED or SUSPENDED: ");
+            action = scanner.nextLine().trim();
+        }
+
+        cardService.updateStatus(cardID, action);
     }
+
+
+
+
+
+
+
 
     private  void listClients(){
         ResultSet rs = clientService.listAllCLients();
@@ -211,6 +228,9 @@ public class MainMenu {
 
 
     }
+
+
+
 
 
 }

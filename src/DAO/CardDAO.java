@@ -127,4 +127,17 @@
             }
             return cardType;
         }
+
+
+        public  void updateStatus(int cardId , String status){
+            String sql = "UPDATE card SET status = ? WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, status);
+                preparedStatement.setInt(2, cardId);
+                preparedStatement.executeUpdate();
+                System.out.println("Card status Updated Sucuessfuly");
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
