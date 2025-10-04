@@ -7,6 +7,7 @@ import Entity.CardOperation;
 import Entity.Client;
 import Service.CardService;
 import Service.ClientService;
+import Service.FraudService;
 import Service.OperationService;
 
 import java.sql.ResultSet;
@@ -22,10 +23,12 @@ public class MainMenu {
     private final Scanner scanner = new Scanner(System.in);
     private CardService cardService;
     private OperationService operationService;
-    public MainMenu(ClientService clientService, CardService cardService,OperationService operationService) {
+    private FraudService fraudService;
+    public MainMenu(ClientService clientService, CardService cardService,OperationService operationService ,FraudService fraudService) {
         this.clientService = clientService;
         this.cardService = cardService;
         this.operationService=operationService;
+        this.fraudService=fraudService;
     }
 
     public void display() {
@@ -175,7 +178,7 @@ public class MainMenu {
 
     private void launchFraudAnalysis() {
         System.out.println("\n--- Launch Fraud Analysis ---");
-        // TODO: Implement fraud analysis logic
+        fraudService.analyseFraud();
     }
 
     private void blockSuspendCard() {

@@ -6,7 +6,7 @@ public record FraudAlert(
         Long id,
         String description,
         AlertLevel level,
-        Long cardId,
+        int cardId,
         LocalDateTime createdAt
 ) {
     public enum AlertLevel { INFO, WARNING, CRITICAL }
