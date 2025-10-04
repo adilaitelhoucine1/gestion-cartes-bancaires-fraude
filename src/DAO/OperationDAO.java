@@ -4,21 +4,23 @@ import Entity.CardOperation;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OperationDAO {
 
     private Connection connection;
 
-    public  OperationDAO(Connection connection){
-        this.connection=connection;
+    public OperationDAO(Connection connection) {
+        this.connection = connection;
     }
 
     public void addOperation(CardOperation cardOperation) {
 
 
-        try(PreparedStatement preparedStatement = connection.prepareStatement(
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO card_operation (operation_date,amount,operation_type,location,card_id)" +
-                        " values (?,?,?,?,?)")){
+                        " values (?,?,?,?,?)")) {
             LocalDateTime now = LocalDateTime.now();
 
             preparedStatement.setTimestamp(1, Timestamp.valueOf(now));
@@ -29,7 +31,7 @@ public class OperationDAO {
 
             preparedStatement.executeUpdate();
             System.out.println("New Operation Added");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -75,5 +77,36 @@ public class OperationDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public List<CardOperation> getAllOperations(int cardId) {
+        List<CardOperation> cardOperations = new ArrayList<>();
+        String sql = "SELECT *  FROM card_operation  where card_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1,cardId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                Timestamp ts = resultSet.getTimestamp("operation_date");
+                LocalDateTime operationDate = ts.toLocalDateTime();
+                Double amount = resultSet.getDouble("amount");
+                String typeStr = resultSet.getString("operation_type");
+                // converts String -> Enum
+                CardOperation.OperationType type = CardOperation.OperationType.valueOf(typeStr);
+
+
+                String location = resultSet.getString("location");
+
+                CardOperation cardOperation = new CardOperation(id, operationDate, amount, type, location, cardId);
+
+                cardOperations.add(cardOperation);
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return cardOperations;
+    }
+
 
 }

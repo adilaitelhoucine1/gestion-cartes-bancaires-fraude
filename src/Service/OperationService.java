@@ -6,7 +6,7 @@ import Entity.CardOperation;
 import Util.CardExpDate;
 import Util.OperationRules;
 
-import java.time.LocalDate;
+import java.util.List;
 
 public class OperationService {
 
@@ -34,13 +34,23 @@ public class OperationService {
             return false;
         }
         if (!operationRules.validateOperation(card, cardOperation)) {
-            System.out.println("Validation rules failed");
             return false;
         }
 
         operationDAO.addOperation(cardOperation);
 
         return true;
+    }
+
+    public List<CardOperation> getHistory(int cardId) {
+
+        Card card = cardService.findCardByID(cardId);
+        if (card == null) {
+            System.out.println("Card not found.");
+
+        }
+        return operationDAO.getAllOperations(cardId);
+
     }
 
 }

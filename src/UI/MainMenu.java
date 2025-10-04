@@ -154,7 +154,23 @@ public class MainMenu {
 
     private void viewCardHistory() {
         System.out.println("\n--- View Card History ---");
-        // TODO: Implement card history viewing
+        System.out.print("Enter card id: ");
+        int cardID = scanner.nextInt();
+
+       List<CardOperation> cardOperations= operationService.getHistory(cardID);
+
+        System.out.println("---- Transaction History ----");
+        System.out.printf("%-5s %-12s %-10s %-10s %-30s\n", "ID", "Type", "Amount", "Date", "Location");
+        for (CardOperation op : cardOperations) {
+            System.out.printf("%-5d %-12s %-10.2f %-10s %-40s\n",
+                    op.id(),
+                    op.type(),
+                    op.amount(),
+                    op.date(),
+                    op.location()
+            );
+        }
+        System.out.println("-----------------------------");
     }
 
     private void launchFraudAnalysis() {
