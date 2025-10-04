@@ -59,6 +59,15 @@ public class CardService {
 
 
 
+    public  Card findCardByID(int id){
+        List<Card> cards = cardDAO.getAllCards();
+        for (Card card :cards){
+            if(card.getId()==id){
+                return  card;
+            }
+        }
+        return  null;
+    }
 
 
 }

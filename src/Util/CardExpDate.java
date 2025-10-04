@@ -9,6 +9,6 @@ public class CardExpDate {
         return LocalDate.now().plusYears(5);
     }
     public  static boolean isExpired(LocalDateTime localDateTime){
-        return localDateTime.isBefore(LocalDateTime.now());
+        return localDateTime.isAfter(LocalDateTime.now());
     }
 }

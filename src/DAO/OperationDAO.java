@@ -2,10 +2,7 @@ package DAO;
 
 import Entity.CardOperation;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 
 public class OperationDAO {
@@ -16,19 +13,22 @@ public class OperationDAO {
         this.connection=connection;
     }
 
-    public  void cardOperation(CardOperation cardOperation){
+    public void addOperation(CardOperation cardOperation) {
 
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(
                 "INSERT INTO card_operation (operation_date,amount,operation_type,location,card_id)" +
                         " values (?,?,?,?,?)")){
-            preparedStatement.setString(1, LocalDateTime);
-            preparedStatement.setString(2, LocalDateTime);
-            preparedStatement.setString(1, LocalDateTime);
-            preparedStatement.setString(1, LocalDateTime);
-            preparedStatement.setString(1, LocalDateTime);
+            LocalDateTime now = LocalDateTime.now();
 
+            preparedStatement.setTimestamp(1, Timestamp.valueOf(now));
+            preparedStatement.setDouble(2, cardOperation.amount());
+            preparedStatement.setString(3, cardOperation.type().name());
+            preparedStatement.setString(4, cardOperation.location());
+            preparedStatement.setInt(5, cardOperation.cardId());
 
+            preparedStatement.executeUpdate();
+            System.out.println("New Operation Added");
         }catch (Exception e){
             System.out.println(e.getMessage());
         }

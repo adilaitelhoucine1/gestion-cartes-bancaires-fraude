@@ -110,16 +110,16 @@ public class MainMenu {
 
     private void performOperation() {
         System.out.println("\n--- Perform a Card Operation ---");
-        System.out.print("Enter card number: ");
-        String cardNumber = scanner.nextLine().trim();
+        System.out.print("Enter card id: ");
+        int cardID = scanner.nextInt();
 
-        Optional<Card> carteOpt = cardService.findByNumber(cardNumber);
-        if (carteOpt.isEmpty()) {
+            Card card = cardService.findCardByID(cardID);
+        if (card==null) {
             System.out.println("Card not found.");
             return;
         }
-        Card carte = carteOpt.get();
-
+        Card carte = card;
+        scanner.nextLine();
         System.out.println("Select operation type: 1. Purchase  2. Withdrawal  3. Online Payment");
         String typeInput = scanner.nextLine().trim();
 
@@ -147,6 +147,7 @@ public class MainMenu {
         String location = scanner.nextLine().trim();
 
         CardOperation cardOperation=new CardOperation(0L, LocalDateTime.now(), amount,type,location,carte.getId());
+
         operationService.addOperation(cardOperation);
 
     }
